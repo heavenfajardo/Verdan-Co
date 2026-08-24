@@ -1,9 +1,9 @@
 <?php
 
 $host = "localhost";
-$username = "root";
-$password = "";
-$dbname = "verdant_db";
+$username = "4784693_verdant_db";
+$password = ".AM#p9)@5W!2kpuC";
+$dbname = "4784693_verdant_db";
 $port = 3306;
 
 try {
@@ -12,9 +12,7 @@ try {
 
     $options = [
         PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-
         PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-
         PDO::ATTR_EMULATE_PREPARES => false
     ];
 
@@ -35,3 +33,4 @@ try {
         "Database connection failed. Please check your MySQL configuration."
     );
 }
+?>
