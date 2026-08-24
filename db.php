@@ -1,7 +1,7 @@
 <?php
 $host = "mysql-3a335e21-heaven-portfolio.d.aivencloud.com";
 $username = "avnadmin";
-$password = getenv('DB_PASS'); // This pulls securely from Vercel
+$password = getenv('DB_PASS'); // Pulls password securely
 $dbname = "defaultdb";
 $port = "14870";
 $caCert = __DIR__ . "/ca.pem";
