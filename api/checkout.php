@@ -1,29 +1,63 @@
 <?php
 
-header('Content-Type: application/json');
+header('Content-Type: application/json; charset=utf-8');
 
 require_once __DIR__ . '/../db.php';
 
 try {
 
-    $rawData = file_get_contents('php://input');
+    if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 
-    $data = json_decode($rawData, true);
-
-    if (!is_array($data)) {
-
-        http_response_code(400);
+        http_response_code(405);
 
         echo json_encode([
             'status' => 'error',
-            'message' => 'Invalid request data.'
+            'message' => 'Method not allowed.'
         ]);
 
         exit;
     }
 
+    $rawData =
+        file_get_contents('php://input');
 
-    if (empty($data['cart']) || !is_array($data['cart'])) {
+    if ($rawData === false || trim($rawData) === '') {
+
+        http_response_code(400);
+
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Empty request.'
+        ]);
+
+        exit;
+    }
+
+    $data =
+        json_decode(
+            $rawData,
+            true
+        );
+
+    if (
+        !is_array($data) ||
+        !isset($data['cart']) ||
+        !is_array($data['cart'])
+    ) {
+
+        http_response_code(400);
+
+        echo json_encode([
+            'status' => 'error',
+            'message' => 'Invalid cart data.'
+        ]);
+
+        exit;
+    }
+
+    if (count($data['cart']) === 0) {
+
+        http_response_code(400);
 
         echo json_encode([
             'status' => 'error',
@@ -33,11 +67,13 @@ try {
         exit;
     }
 
-
     $total = 0;
 
-
     foreach ($data['cart'] as $item) {
+
+        if (!is_array($item)) {
+            continue;
+        }
 
         if (
             !isset($item['price']) ||
@@ -46,19 +82,34 @@ try {
             continue;
         }
 
-        $price = (float) $item['price'];
+        $price =
+            filter_var(
+                $item['price'],
+                FILTER_VALIDATE_FLOAT
+            );
 
-        $quantity = (int) $item['quantity'];
+        $quantity =
+            filter_var(
+                $item['quantity'],
+                FILTER_VALIDATE_INT
+            );
 
-        if ($price < 0 || $quantity <= 0) {
+        if (
+            $price === false ||
+            $quantity === false ||
+            $price < 0 ||
+            $quantity <= 0
+        ) {
             continue;
         }
 
-        $total += $price * $quantity;
+        $total +=
+            $price * $quantity;
     }
 
-
     if ($total <= 0) {
+
+        http_response_code(400);
 
         echo json_encode([
             'status' => 'error',
@@ -68,26 +119,32 @@ try {
         exit;
     }
 
-
     $stmt = $pdo->prepare(
         "INSERT INTO orders (total_amount)
-         VALUES (?)"
+         VALUES (:total)"
     );
 
-
     $stmt->execute([
-        $total
+        ':total' => $total
     ]);
-
 
     echo json_encode([
         'status' => 'success',
         'message' => 'Order recorded successfully!',
-        'total' => number_format($total, 2)
+        'total' => number_format(
+            $total,
+            2,
+            '.',
+            ''
+        )
     ]);
 
-
 } catch (Throwable $e) {
+
+    error_log(
+        'Checkout error: ' .
+        $e->getMessage()
+    );
 
     http_response_code(500);
 
@@ -95,5 +152,4 @@ try {
         'status' => 'error',
         'message' => 'Unable to process the order.'
     ]);
-
 }

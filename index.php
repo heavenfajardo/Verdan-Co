@@ -6,9 +6,6 @@ $store_name = "Verdant & Co.";
 |--------------------------------------------------------------------------
 | Product Catalog
 |--------------------------------------------------------------------------
-| These are currently hard-coded so your storefront can work without
-| requiring a database query just to display products.
-|--------------------------------------------------------------------------
 */
 
 $all_products = [
@@ -305,7 +302,7 @@ $all_products = [
 
 /*
 |--------------------------------------------------------------------------
-| Featured products
+| Featured Products
 |--------------------------------------------------------------------------
 */
 
@@ -343,12 +340,16 @@ $featured_products = [
 
 </head>
 
+
 <body>
+
 
 <div id="toast-container"></div>
 
 
-<!-- HEADER -->
+<!-- =========================================================
+     HEADER
+========================================================= -->
 
 <header>
 
@@ -372,6 +373,7 @@ $featured_products = [
                 <a
                     href="#home"
                     class="nav-link active"
+                    onclick="goToSection(event, 'home')"
                 >
                     Home
                 </a>
@@ -381,6 +383,7 @@ $featured_products = [
                 <a
                     href="#groceries"
                     class="nav-link"
+                    onclick="goToSection(event, 'groceries')"
                 >
                     Groceries
                 </a>
@@ -390,6 +393,7 @@ $featured_products = [
                 <a
                     href="#cart"
                     class="nav-link"
+                    onclick="goToSection(event, 'cart')"
                 >
                     Cart
                     <span
@@ -403,6 +407,7 @@ $featured_products = [
                 <a
                     href="#about"
                     class="nav-link"
+                    onclick="goToSection(event, 'about')"
                 >
                     About Us
                 </a>
@@ -412,6 +417,7 @@ $featured_products = [
                 <a
                     href="#contact"
                     class="nav-link"
+                    onclick="goToSection(event, 'contact')"
                 >
                     Contact
                 </a>
@@ -424,7 +430,10 @@ $featured_products = [
 </header>
 
 
-<!-- HOME -->
+
+<!-- =========================================================
+     HOME
+========================================================= -->
 
 <section
     id="home"
@@ -525,11 +534,14 @@ $featured_products = [
                             </span>
 
                             <button
+                                type="button"
                                 class="add-btn"
-                                onclick="addToCart(
-                                    <?php echo htmlspecialchars(json_encode($p['name'])); ?>,
-                                    <?php echo $p['price']; ?>
-                                )"
+                                onclick='addToCart(
+                                    <?php echo json_encode($p["name"]); ?>,
+                                    <?php echo $p["price"]; ?>,
+                                    <?php echo json_encode($p["unit"]); ?>,
+                                    <?php echo json_encode($p["img"]); ?>
+                                )'
                             >
                                 + Add
                             </button>
@@ -549,7 +561,10 @@ $featured_products = [
 </section>
 
 
-<!-- GROCERIES -->
+
+<!-- =========================================================
+     GROCERIES
+========================================================= -->
 
 <section
     id="groceries"
@@ -579,6 +594,7 @@ $featured_products = [
         <div class="category-sidebar">
 
             <button
+                type="button"
                 class="cat-btn active"
                 onclick="filterCategory('All', this)"
             >
@@ -586,6 +602,7 @@ $featured_products = [
             </button>
 
             <button
+                type="button"
                 class="cat-btn"
                 onclick="filterCategory('Fruits', this)"
             >
@@ -593,6 +610,7 @@ $featured_products = [
             </button>
 
             <button
+                type="button"
                 class="cat-btn"
                 onclick="filterCategory('Vegetables', this)"
             >
@@ -600,6 +618,7 @@ $featured_products = [
             </button>
 
             <button
+                type="button"
                 class="cat-btn"
                 onclick="filterCategory('Meat & Seafood', this)"
             >
@@ -607,6 +626,7 @@ $featured_products = [
             </button>
 
             <button
+                type="button"
                 class="cat-btn"
                 onclick="filterCategory('Dairy & Eggs', this)"
             >
@@ -614,6 +634,7 @@ $featured_products = [
             </button>
 
             <button
+                type="button"
                 class="cat-btn"
                 onclick="filterCategory('Pantry', this)"
             >
@@ -621,6 +642,7 @@ $featured_products = [
             </button>
 
             <button
+                type="button"
                 class="cat-btn"
                 onclick="filterCategory('Beverages', this)"
             >
@@ -668,11 +690,14 @@ $featured_products = [
                             </span>
 
                             <button
+                                type="button"
                                 class="add-btn"
-                                onclick="addToCart(
-                                    <?php echo htmlspecialchars(json_encode($row['name'])); ?>,
-                                    <?php echo $row['price']; ?>
-                                )"
+                                onclick='addToCart(
+                                    <?php echo json_encode($row["name"]); ?>,
+                                    <?php echo $row["price"]; ?>,
+                                    <?php echo json_encode($row["unit"]); ?>,
+                                    <?php echo json_encode($row["img"]); ?>
+                                )'
                             >
                                 + Add
                             </button>
@@ -692,7 +717,10 @@ $featured_products = [
 </section>
 
 
-<!-- CART -->
+
+<!-- =========================================================
+     CART
+========================================================= -->
 
 <section
     id="cart"
@@ -735,7 +763,9 @@ $featured_products = [
                 style="display:flex;justify-content:space-between;margin-bottom:1rem;color:var(--text-muted);"
             >
 
-                <span>Subtotal</span>
+                <span>
+                    Subtotal
+                </span>
 
                 <span id="cart-subtotal">
                     $0.00
@@ -748,7 +778,9 @@ $featured_products = [
                 style="display:flex;justify-content:space-between;margin-bottom:1.5rem;font-weight:600;border-top:1px solid var(--border);padding-top:1rem;"
             >
 
-                <span>Total</span>
+                <span>
+                    Total
+                </span>
 
                 <span
                     id="cart-total"
@@ -761,6 +793,7 @@ $featured_products = [
 
 
             <button
+                type="button"
                 class="btn"
                 style="width:100%;text-align:center;"
                 onclick="checkoutOrder()"
@@ -775,7 +808,10 @@ $featured_products = [
 </section>
 
 
-<!-- ABOUT -->
+
+<!-- =========================================================
+     ABOUT
+========================================================= -->
 
 <section
     id="about"
@@ -842,7 +878,10 @@ $featured_products = [
 </section>
 
 
-<!-- CONTACT -->
+
+<!-- =========================================================
+     CONTACT
+========================================================= -->
 
 <section
     id="contact"
@@ -928,7 +967,773 @@ $featured_products = [
 </section>
 
 
-<script src="script.js"></script>
+
+<!-- =========================================================
+     JAVASCRIPT
+========================================================= -->
+
+<script>
+
+/*
+|--------------------------------------------------------------------------
+| CART
+|--------------------------------------------------------------------------
+*/
+
+let cart = JSON.parse(localStorage.getItem("verdantCart")) || [];
+
+
+/*
+|--------------------------------------------------------------------------
+| Save Cart
+|--------------------------------------------------------------------------
+*/
+
+function saveCart() {
+
+    localStorage.setItem(
+        "verdantCart",
+        JSON.stringify(cart)
+    );
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Add Product To Cart
+|--------------------------------------------------------------------------
+*/
+
+function addToCart(name, price, unit, img) {
+
+    const existingProduct = cart.find(
+        item => item.name === name
+    );
+
+    if (existingProduct) {
+
+        existingProduct.quantity += 1;
+
+    } else {
+
+        cart.push({
+
+            name: name,
+            price: Number(price),
+            unit: unit,
+            img: img,
+            quantity: 1
+
+        });
+
+    }
+
+    saveCart();
+
+    updateCart();
+
+    showToast(
+        name + " added to your cart."
+    );
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Increase Quantity
+|--------------------------------------------------------------------------
+*/
+
+function increaseQuantity(index) {
+
+    cart[index].quantity += 1;
+
+    saveCart();
+
+    updateCart();
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Decrease Quantity
+|--------------------------------------------------------------------------
+*/
+
+function decreaseQuantity(index) {
+
+    if (cart[index].quantity > 1) {
+
+        cart[index].quantity -= 1;
+
+    } else {
+
+        cart.splice(index, 1);
+
+    }
+
+    saveCart();
+
+    updateCart();
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Remove Product
+|--------------------------------------------------------------------------
+*/
+
+function removeFromCart(index) {
+
+    const productName = cart[index].name;
+
+    cart.splice(index, 1);
+
+    saveCart();
+
+    updateCart();
+
+    showToast(
+        productName + " removed from your cart."
+    );
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Update Cart
+|--------------------------------------------------------------------------
+*/
+
+function updateCart() {
+
+    const cartList =
+        document.getElementById("cart-items-list");
+
+    const cartCount =
+        document.getElementById("cart-count");
+
+    const subtotalElement =
+        document.getElementById("cart-subtotal");
+
+    const totalElement =
+        document.getElementById("cart-total");
+
+
+    let totalItems = 0;
+
+    let subtotal = 0;
+
+
+    cart.forEach(item => {
+
+        totalItems += item.quantity;
+
+        subtotal +=
+            item.price * item.quantity;
+
+    });
+
+
+    cartCount.textContent = totalItems;
+
+    subtotalElement.textContent =
+        "$" + subtotal.toFixed(2);
+
+    totalElement.textContent =
+        "$" + subtotal.toFixed(2);
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Empty Cart
+    |--------------------------------------------------------------------------
+    */
+
+    if (cart.length === 0) {
+
+        cartList.innerHTML = `
+            <p style="color:var(--text-muted);">
+                Your cart is currently empty.
+            </p>
+        `;
+
+        return;
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | Cart Products
+    |--------------------------------------------------------------------------
+    */
+
+    cartList.innerHTML = "";
+
+
+    cart.forEach((item, index) => {
+
+        const cartItem =
+            document.createElement("div");
+
+        cartItem.className = "cart-item";
+
+        cartItem.innerHTML = `
+
+            <div
+                style="
+                    display:flex;
+                    align-items:center;
+                    gap:1rem;
+                    width:100%;
+                "
+            >
+
+                <img
+                    src="${escapeHtml(item.img)}"
+                    alt="${escapeHtml(item.name)}"
+                    style="
+                        width:80px;
+                        height:80px;
+                        object-fit:cover;
+                        border-radius:8px;
+                    "
+                >
+
+                <div style="flex:1;">
+
+                    <h4
+                        style="
+                            margin:0 0 .3rem 0;
+                        "
+                    >
+                        ${escapeHtml(item.name)}
+                    </h4>
+
+                    <p
+                        style="
+                            margin:0;
+                            color:var(--text-muted);
+                            font-size:.9rem;
+                        "
+                    >
+                        $${item.price.toFixed(2)}
+                        / ${escapeHtml(item.unit)}
+                    </p>
+
+                </div>
+
+
+                <div
+                    style="
+                        display:flex;
+                        align-items:center;
+                        gap:.5rem;
+                    "
+                >
+
+                    <button
+                        type="button"
+                        onclick="decreaseQuantity(${index})"
+                        style="
+                            width:32px;
+                            height:32px;
+                            border:1px solid var(--border);
+                            background:white;
+                            border-radius:5px;
+                            cursor:pointer;
+                            font-size:1.1rem;
+                        "
+                    >
+                        −
+                    </button>
+
+                    <span
+                        style="
+                            min-width:25px;
+                            text-align:center;
+                            font-weight:600;
+                        "
+                    >
+                        ${item.quantity}
+                    </span>
+
+                    <button
+                        type="button"
+                        onclick="increaseQuantity(${index})"
+                        style="
+                            width:32px;
+                            height:32px;
+                            border:1px solid var(--border);
+                            background:white;
+                            border-radius:5px;
+                            cursor:pointer;
+                            font-size:1.1rem;
+                        "
+                    >
+                        +
+                    </button>
+
+                </div>
+
+
+                <div
+                    style="
+                        min-width:80px;
+                        text-align:right;
+                        font-weight:600;
+                    "
+                >
+                    $${(
+                        item.price *
+                        item.quantity
+                    ).toFixed(2)}
+                </div>
+
+
+                <button
+                    type="button"
+                    onclick="removeFromCart(${index})"
+                    style="
+                        border:none;
+                        background:none;
+                        color:#b33;
+                        cursor:pointer;
+                        font-size:.85rem;
+                    "
+                >
+                    Remove
+                </button>
+
+            </div>
+
+        `;
+
+        cartList.appendChild(cartItem);
+
+    });
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Escape HTML
+|--------------------------------------------------------------------------
+*/
+
+function escapeHtml(value) {
+
+    return String(value)
+
+        .replace(/&/g, "&amp;")
+
+        .replace(/</g, "&lt;")
+
+        .replace(/>/g, "&gt;")
+
+        .replace(/"/g, "&quot;")
+
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Toast Notification
+|--------------------------------------------------------------------------
+*/
+
+function showToast(message) {
+
+    const container =
+        document.getElementById("toast-container");
+
+    const toast =
+        document.createElement("div");
+
+    toast.textContent = message;
+
+    toast.style.cssText = `
+        position:fixed;
+        right:20px;
+        bottom:20px;
+        background:#1f3a2c;
+        color:white;
+        padding:14px 20px;
+        border-radius:8px;
+        box-shadow:0 8px 25px rgba(0,0,0,.15);
+        z-index:9999;
+        font-size:14px;
+        animation:toastIn .3s ease;
+    `;
+
+    container.appendChild(toast);
+
+
+    setTimeout(() => {
+
+        toast.style.opacity = "0";
+
+        toast.style.transform =
+            "translateY(10px)";
+
+        toast.style.transition =
+            "all .3s ease";
+
+        setTimeout(() => {
+
+            toast.remove();
+
+        }, 300);
+
+    }, 2500);
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Navigation
+|--------------------------------------------------------------------------
+*/
+
+function goToSection(event, sectionId) {
+
+    if (event) {
+
+        event.preventDefault();
+
+    }
+
+
+    const sections =
+        document.querySelectorAll(".page-section");
+
+    const navLinks =
+        document.querySelectorAll(".nav-link");
+
+
+    sections.forEach(section => {
+
+        section.classList.remove(
+            "active-section"
+        );
+
+    });
+
+
+    const target =
+        document.getElementById(sectionId);
+
+
+    if (target) {
+
+        target.classList.add(
+            "active-section"
+        );
+
+    }
+
+
+    navLinks.forEach(link => {
+
+        link.classList.remove("active");
+
+    });
+
+
+    const activeLink =
+        document.querySelector(
+            `.nav-link[href="#${sectionId}"]`
+        );
+
+
+    if (activeLink) {
+
+        activeLink.classList.add("active");
+
+    }
+
+
+    window.scrollTo({
+
+        top: 0,
+
+        behavior: "smooth"
+
+    });
+
+
+    if (window.location.hash !== "#" + sectionId) {
+
+        history.pushState(
+            null,
+            "",
+            "#" + sectionId
+        );
+
+    }
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Category Filter
+|--------------------------------------------------------------------------
+*/
+
+function filterCategory(category, button) {
+
+    const products =
+        document.querySelectorAll(
+            "#full-product-grid .product-card"
+        );
+
+
+    const buttons =
+        document.querySelectorAll(
+            ".cat-btn"
+        );
+
+
+    buttons.forEach(btn => {
+
+        btn.classList.remove("active");
+
+    });
+
+
+    if (button) {
+
+        button.classList.add("active");
+
+    }
+
+
+    products.forEach(product => {
+
+        const productCategory =
+            product.dataset.category;
+
+
+        if (
+            category === "All" ||
+            productCategory === category
+        ) {
+
+            product.style.display = "";
+
+        } else {
+
+            product.style.display = "none";
+
+        }
+
+    });
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Checkout
+|--------------------------------------------------------------------------
+*/
+
+function checkoutOrder() {
+
+    if (cart.length === 0) {
+
+        showToast(
+            "Your cart is empty. Please add a product first."
+        );
+
+        return;
+
+    }
+
+
+    let total = 0;
+
+    cart.forEach(item => {
+
+        total +=
+            item.price *
+            item.quantity;
+
+    });
+
+
+    const confirmed =
+        confirm(
+            "Your order total is $" +
+            total.toFixed(2) +
+            ".\n\nProceed with checkout?"
+        );
+
+
+    if (confirmed) {
+
+        showToast(
+            "Checkout started successfully."
+        );
+
+        /*
+         * You can later replace this with:
+         *
+         * window.location.href = "checkout.php";
+         *
+         * when you create your real checkout page.
+         */
+
+    }
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Contact Form
+|--------------------------------------------------------------------------
+*/
+
+function handleContact(event) {
+
+    event.preventDefault();
+
+    showToast(
+        "Thank you! Your message has been received."
+    );
+
+    event.target.reset();
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Load Cart When Page Opens
+|--------------------------------------------------------------------------
+*/
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        updateCart();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | Open Section From URL Hash
+        |--------------------------------------------------------------------------
+        */
+
+        const hash =
+            window.location.hash.substring(1);
+
+
+        if (hash) {
+
+            const validSections = [
+                "home",
+                "groceries",
+                "cart",
+                "about",
+                "contact"
+            ];
+
+
+            if (
+                validSections.includes(hash)
+            ) {
+
+                goToSection(
+                    null,
+                    hash
+                );
+
+            }
+
+        }
+
+    }
+);
+
+</script>
+
+
+<style>
+
+@keyframes toastIn {
+
+    from {
+
+        opacity:0;
+
+        transform:translateY(10px);
+
+    }
+
+    to {
+
+        opacity:1;
+
+        transform:translateY(0);
+
+    }
+
+}
+
+
+/*
+|--------------------------------------------------------------------------
+| Cart Item Styling
+|--------------------------------------------------------------------------
+*/
+
+.cart-item {
+
+    display:flex;
+
+    align-items:center;
+
+    padding:1rem 0;
+
+    border-bottom:1px solid var(--border);
+
+}
+
+
+.cart-item:last-child {
+
+    border-bottom:none;
+
+}
+
+
+@media (max-width:768px) {
+
+    .cart-item > div {
+
+        flex-wrap:wrap;
+
+    }
+
+}
+
+</style>
+
 
 </body>
 
