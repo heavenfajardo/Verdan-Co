@@ -1,45 +1,21 @@
 <?php
 
-$host = getenv('DB_HOST') ?: 'mysql-3a335e21-heaven-portfolio.d.aivencloud.com';
-$username = getenv('DB_USER') ?: 'avnadmin';
-$password = getenv('DB_PASS') ?: '';
-$dbname = getenv('DB_NAME') ?: 'defaultdb';
-$port = getenv('DB_PORT') ?: '14870';
-
-$caCert = __DIR__ . '/ca.pem';
+$host = "localhost";
+$username = "root";
+$password = "";
+$dbname = "verdant_db";
+$port = 3306;
 
 try {
 
-    if ($password === '') {
-        throw new RuntimeException(
-            'DB_PASS environment variable is not configured.'
-        );
-    }
-
-    if (!file_exists($caCert)) {
-        throw new RuntimeException(
-            'ca.pem certificate file is missing.'
-        );
-    }
-
-    $dsn =
-        "mysql:host={$host};" .
-        "port={$port};" .
-        "dbname={$dbname};" .
-        "charset=utf8mb4";
+    $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
 
     $options = [
-        PDO::ATTR_ERRMODE =>
-            PDO::ERRMODE_EXCEPTION,
+        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
 
-        PDO::ATTR_DEFAULT_FETCH_MODE =>
-            PDO::FETCH_ASSOC,
+        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
 
-        PDO::ATTR_EMULATE_PREPARES =>
-            false,
-
-        PDO::MYSQL_ATTR_SSL_CA =>
-            $caCert
+        PDO::ATTR_EMULATE_PREPARES => false
     ];
 
     $pdo = new PDO(
@@ -49,14 +25,13 @@ try {
         $options
     );
 
-} catch (Throwable $e) {
+} catch (PDOException $e) {
 
     error_log(
-        'Database connection failed: ' .
-        $e->getMessage()
+        "Database connection failed: " . $e->getMessage()
     );
 
-    throw new RuntimeException(
-        'Database connection failed.'
+    die(
+        "Database connection failed. Please check your MySQL configuration."
     );
 }

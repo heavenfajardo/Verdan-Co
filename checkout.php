@@ -2,7 +2,7 @@
 
 header('Content-Type: application/json; charset=utf-8');
 
-require_once __DIR__ . '/../db.php';
+require_once __DIR__ . '/db.php';
 
 try {
 
@@ -18,10 +18,14 @@ try {
         exit;
     }
 
-    $rawData =
-        file_get_contents('php://input');
 
-    if ($rawData === false || trim($rawData) === '') {
+    $rawData = file_get_contents('php://input');
+
+
+    if (
+        $rawData === false ||
+        trim($rawData) === ''
+    ) {
 
         http_response_code(400);
 
@@ -33,11 +37,12 @@ try {
         exit;
     }
 
-    $data =
-        json_decode(
-            $rawData,
-            true
-        );
+
+    $data = json_decode(
+        $rawData,
+        true
+    );
+
 
     if (
         !is_array($data) ||
@@ -55,6 +60,7 @@ try {
         exit;
     }
 
+
     if (count($data['cart']) === 0) {
 
         http_response_code(400);
@@ -67,13 +73,16 @@ try {
         exit;
     }
 
+
     $total = 0;
+
 
     foreach ($data['cart'] as $item) {
 
         if (!is_array($item)) {
             continue;
         }
+
 
         if (
             !isset($item['price']) ||
@@ -82,17 +91,18 @@ try {
             continue;
         }
 
-        $price =
-            filter_var(
-                $item['price'],
-                FILTER_VALIDATE_FLOAT
-            );
 
-        $quantity =
-            filter_var(
-                $item['quantity'],
-                FILTER_VALIDATE_INT
-            );
+        $price = filter_var(
+            $item['price'],
+            FILTER_VALIDATE_FLOAT
+        );
+
+
+        $quantity = filter_var(
+            $item['quantity'],
+            FILTER_VALIDATE_INT
+        );
+
 
         if (
             $price === false ||
@@ -103,9 +113,10 @@ try {
             continue;
         }
 
-        $total +=
-            $price * $quantity;
+
+        $total += $price * $quantity;
     }
+
 
     if ($total <= 0) {
 
@@ -119,18 +130,23 @@ try {
         exit;
     }
 
+
     $stmt = $pdo->prepare(
         "INSERT INTO orders (total_amount)
          VALUES (:total)"
     );
 
+
     $stmt->execute([
         ':total' => $total
     ]);
 
+
     echo json_encode([
         'status' => 'success',
+
         'message' => 'Order recorded successfully!',
+
         'total' => number_format(
             $total,
             2,
@@ -146,7 +162,9 @@ try {
         $e->getMessage()
     );
 
+
     http_response_code(500);
+
 
     echo json_encode([
         'status' => 'error',
